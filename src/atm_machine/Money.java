@@ -81,14 +81,28 @@ public class Money {
      * @return A string of the collection of the different bills used.
      */
     public String toString() {
+        Map<Integer, Integer> nonZeros = new TreeMap<>(Collections.reverseOrder());
         String listing = "";
-        for (Map.Entry<Integer, Integer> entry : bills.entrySet()) {
-            if (entry.getValue() > 0) {
-                listing += entry.getValue().toString() + " $" + entry.getKey().toString() + ", ";
-            }
+        int count = 0;
+        // Filter non-zero bills
+        for (Integer billValue : bills.keySet()) {
+          int quantity = bills.get(billValue);
+          if (quantity > 0) {
+            nonZeros.put(billValue, quantity);
+          } 
         }
-        listing = listing.substring(0, listing.lastIndexOf(','));
-        return listing.substring(0, listing.lastIndexOf(", ") + 2) + "and "
-                + listing.substring(listing.lastIndexOf(", ") + 2);
+        for (Map.Entry<Integer, Integer> entry : nonZeros.entrySet()) {
+          listing += entry.getValue().toString() + " $" + entry.getKey().toString();
+          count++;
+          // For 2 items
+          if (nonZeros.size() == 2 && count == 1) {
+            listing += " and ";
+          }
+          // For 3 or more items
+          else if (nonZeros.size() > 2 && count != nonZeros.size()) {
+            listing += (count != nonZeros.size()-1) ? ", " : ", and ";
+          }
+        }
+        return listing;
     }
 }
