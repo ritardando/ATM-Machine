@@ -172,10 +172,12 @@ public class ATM {
 			try {
 				int choice = Integer.parseInt(choicestr) - 1;
 				if(value[choice] <= amount) {
-					int tempamount = remainder % value[choice];
+					int tempamount = remainder / value[choice];
 					remainder = remainder - (value[choice] * tempamount);
 					cash.valueToMoney(remainder);
 					cash.updateMoney(value[choice], tempamount);
+					System.out.println("\nYou withdrew: " + String.format("$%.2f", amount) +
+										"\nYour cash is: ");
 					System.out.println(cash.toString());
 				}else {
 					System.out.println("Invalid Choice");

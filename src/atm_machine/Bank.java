@@ -4,7 +4,7 @@ package atm_machine;
 import java.util.Iterator;
 import java.util.Vector;
 
-public class Bank { //we can implement Serializable to save changes
+public class Bank {
 	private Vector<UserAccount> accounts = new Vector<UserAccount>();
 	private UserAccount openAccount = null;// the account that we are using
 	/**

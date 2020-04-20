@@ -14,7 +14,7 @@ public class Money {
      */
     public Money() {
         bills.put(1, 0);
-        bills.put(2, 0);
+        //bills.put(2, 0);
         bills.put(5, 0);
         bills.put(10, 0);
         bills.put(20, 0);
