@@ -94,11 +94,11 @@ public class ATM {
 	 */
 	public void depositFunds() {
 		Screen.depositMenu();
-		int choice = getChoice(); //choice of what account to use, savings or checkings
+		int choice = getChoice(); //choice of what account to use, savings or checking
 		System.out.println("Would you like to deposit a check or cash? Type 1 for check, 2 for cash: ");
-		int checkorcashoption = Integer.parseInt(cin.nextLine());
+		int checkorcashoption = getChoice();
 
-		if (checkorcashoption == 1) {// checking acount 
+		if (checkorcashoption == 0) {// checking account 
 			System.out.println("How much money is on the check?: ");
 			String amountStr = cin.nextLine();
 			try{
@@ -120,29 +120,24 @@ public class ATM {
 				boolean checkedAmount = true;
 
 				while(checkedAmount){
-				double amount = Double.parseDouble(amnt);
-				m.valueToMoney(amount);
-				System.out.println("Is this the correct amount? Type Y for Yes, N for No: ");
-				String confirmation = cin.nextLine();
-				if(confirmation.equalsIgnoreCase("Y"))
-				{
-					myBank.deposit(choice, amount);
-					System.out.println("Thank you for depositing the cash!"); 
-					checkedAmount = false;
+					double amount = Double.parseDouble(amnt);
+					m.valueToMoney(amount);
+					System.out.println("Is this the correct amount? Type Y for Yes, N for No: ");
+					String confirmation = cin.nextLine();
+					if(confirmation.equalsIgnoreCase("Y")) {
+						myBank.deposit(choice, amount);
+						System.out.println("Thank you for depositing the cash!"); 
+						checkedAmount = false;
+					}else {
+						System.out.println("Please input the correct amount you wish to deposit: ");
+						amount = Double.parseDouble(cin.nextLine());
+					}
 				}
-				else
-				{
-					System.out.println("Please input the correct amount you wish to deposit: ");
-					amount = Double.parseDouble(cin.nextLine());
-				}
-				}
+			}catch(Exception e) {
+				System.out.println("Invalid Input");
 			}
-			catch(Exception e)
-			{
-				System.out.println(e);
-			}
-			pressEnterToContinue();
 		}
+		pressEnterToContinue();
 	}
 	/**
 	 * Withdraws money from bank account. 
