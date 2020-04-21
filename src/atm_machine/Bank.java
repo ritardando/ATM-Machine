@@ -47,7 +47,9 @@ public class Bank {
 	}
 	
 	//deposit money method
-	//public void deposit(int i, float amount)
+	public void deposit(int i, double amount){
+		openAccount.getAccount(i).deposit(amount);
+	}
 	
 	//view balance
 	/**
