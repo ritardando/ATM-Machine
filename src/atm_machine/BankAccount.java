@@ -14,7 +14,7 @@ public abstract class BankAccount {
 	 * @param number bank account number
 	 * @param initialDeposit the amount in the account, when the account is started.
 	 */
-	public BankAccount(String number, Double initialDeposit) {//changed number to string so it matches use account -Jose
+	public BankAccount(String number, double initialDeposit) {//changed number to string so it matches use account -Jose
 		balance = initialDeposit;
 		AccountNumber = number;
 	}
