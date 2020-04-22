@@ -95,46 +95,50 @@ public class ATM {
 	public void depositFunds() {
 		Screen.depositMenu();
 		int choice = getChoice(); //choice of what account to use, savings or checking
-		System.out.println("Would you like to deposit a check or cash? Type 1 for check, 2 for cash: ");
-		int checkorcashoption = getChoice();
-
-		if (checkorcashoption == 0) {// checking account 
-			System.out.println("How much money is on the check?: ");
-			String amountStr = cin.nextLine();
-			try{
-				double amount = Double.parseDouble(amountStr);
-				myBank.deposit(choice, amount);
-				System.out.println("Thank you for depositing the check!");
-			}
-			catch(Exception e)
-			{
-				System.out.println(e);
-			}
-		}
-		//cash option
+		if(choice == 2) {}
+		else if(choice == 3) {
+			System.out.println("Invalid Choice");
+		} 
 		else {
-			Money m = new Money(); 
-			System.out.println("How much cash would you like to deposit?");
-			String amnt = cin.nextLine();
-			try{
-				boolean checkedAmount = true;
-
-				while(checkedAmount){
-					double amount = Double.parseDouble(amnt);
-					m.valueToMoney(amount);
-					System.out.println("Is this the correct amount? Type Y for Yes, N for No: ");
-					String confirmation = cin.nextLine();
-					if(confirmation.equalsIgnoreCase("Y")) {
-						myBank.deposit(choice, amount);
-						System.out.println("Thank you for depositing the cash!"); 
-						checkedAmount = false;
-					}else {
-						System.out.println("Please input the correct amount you wish to deposit: ");
-						amount = Double.parseDouble(cin.nextLine());
-					}
+			System.out.println("Would you like to deposit a check or cash? Type 1 for check, 2 for cash: ");
+			int checkorcashoption = getChoice();
+			if (checkorcashoption == 0) {// checking account 
+				System.out.println("How much money is on the check?: ");
+				String amountStr = cin.nextLine();
+				try{
+					double amount = Double.parseDouble(amountStr);
+					myBank.deposit(choice, amount);
+					System.out.println("Thank you for depositing the check!");
 				}
-			}catch(Exception e) {
-				System.out.println("Invalid Input");
+				catch(Exception e)
+				{
+					System.out.println(e);
+				}
+			}
+			//cash option
+			else {
+	// 			Money m = new Money(); 
+				System.out.println("How much cash would you like to deposit?");
+				try{
+					boolean checkedAmount = true;
+
+					while(checkedAmount){
+						String amnt = cin.nextLine();
+						double amount = Double.parseDouble(amnt);
+	// 					m.valueToMoney(amount);
+						System.out.println("Is this the correct amount? Type Y for Yes, N for No: ");
+						String confirmation = cin.nextLine();
+						if(confirmation.equalsIgnoreCase("Y")) {
+							myBank.deposit(choice, amount);
+							System.out.println("Thank you for depositing the cash!"); 
+							checkedAmount = false;
+						}else {
+							System.out.println("Please input the correct amount you wish to deposit: ");
+						}
+					}
+				}catch(Exception e) {
+					System.out.println("Invalid Input");
+				}
 			}
 		}
 		pressEnterToContinue();
@@ -207,20 +211,22 @@ public class ATM {
 		int value[] = {5,10,20,50,100};
 		int remainder = (int) amount;
 		Money cash = new Money();
-		
-		if (remainder < 5) {
-			cash.updateMoney(1, remainder);
-			remainder = 0;
-		}else {
-			System.out.println("How would your money: ");
+		if (remainder == 0) {}
+// 		if (remainder < 5) {
+// 			cash.updateMoney(1, remainder);
+// 			remainder = 0;
+// 		}
+		else {
+			System.out.println("How would you like the money withdrawn: ");
 			billsMenu(value, amount);
+			System.out.print("ENTER NUMBER: ");
 			String choicestr = cin.nextLine();
 			try {
 				int choice = Integer.parseInt(choicestr) - 1;
 				if(value[choice] <= amount) {
 					int tempamount = remainder / value[choice];
-					remainder = remainder - (value[choice] * tempamount);
-					cash.valueToMoney(remainder);
+	// 					remainder = remainder - (value[choice] * tempamount);
+	// 					cash.valueToMoney(remainder); 
 					cash.updateMoney(value[choice], tempamount);
 					System.out.println("\nYou withdrew: " + String.format("$%.2f", amount) +
 										"\nYour cash is: ");
