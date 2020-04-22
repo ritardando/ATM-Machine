@@ -95,19 +95,15 @@ public class ATM {
 	public void depositFunds() {
 		Screen.depositMenu();
 		int choice = getChoice(); //choice of what account to use, savings or checking
-		///////////////
 		if(choice == 3) {
 			System.out.println("Invalid Choice");
 		}
-		///////////////
 		else if (choice != 2) {
 			System.out.print("Would you like to deposit a check or cash? Type 1 for check, 2 for cash: ");
 			int checkorcashoption = getChoice();
-			///////////////
 			if(checkorcashoption == 3) {
 				System.out.println("Invalid Choice");
 			}
-			///////////////
 			else if (checkorcashoption == 0) {// checking account 
 				System.out.print("How much money is on the check?: ");
 				String amountStr = cin.nextLine();
@@ -153,14 +149,12 @@ public class ATM {
 	 * Withdraws money from bank account. 
 	 */
 	public void withdrawFunds() {
+		final double MIN_VALUE = 5;
 		Screen.displayWithdrawMenu();
 		int choice = getChoice();
-		final double MIN_VALUE = 5;
-		///////////////
-		else if(choice == 3) {
+		if(choice == 3) {
 			System.out.println("Invalid Choice");
 		}
-		///////////////
 		else if (choice != 2) {
 			System.out.print("How much money would you like to withdraw?: ");
 			String amtstr = cin.nextLine();
@@ -191,11 +185,9 @@ public class ATM {
 			System.out.printf("%nAccount: %s%nAmount: $%.2f%n", 
 					  (choice == 0) ? "Checking" : "Savings", myBank.viewBalance(choice));
 		}
-		///////////////
 		else if (choice == 3) {
 			System.out.println("Invalid Choice");
 		}
-		///////////////
 		pressEnterToContinue();
 	}
 	/**
@@ -220,7 +212,6 @@ public class ATM {
 		int value[] = {5,10,20,50,100};
 		int remainder = (int) amount;
 		Money cash = new Money();
-		///////////////
 // 		if (remainder < 5) {
 // 			cash.updateMoney(1, remainder);
 // 			remainder = 0;
