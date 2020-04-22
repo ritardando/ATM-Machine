@@ -29,8 +29,8 @@ public class ATM {
 		}
 	}
 	/**
-	 * This method prompts user to input pin card number (simulating inserting card and entering pin number).<br>
-	 * If the user get it wrong 3 time, the ATM machine will return to the welcome screen.
+	 * This method prompts user to input pin and card number (simulating inserting card and entering PIN).<br>
+	 * If the user get it wrong 3 time, the ATM will return to the welcome screen.
 	 */
 	public void insertCard() {
 		int tries = 0;
@@ -47,10 +47,10 @@ public class ATM {
 				}
 			}
 			if(!cancel) {
-				System.out.println("Insert card and pin number:");
+				System.out.println("Insert card and PIN:");
 				System.out.print("Card #: ");
 				cardNumber = cin.nextLine();
-				System.out.print("Pin #: ");
+				System.out.print("PIN: ");
 				pin = cin.nextLine();
 				accountOpen = myBank.accessAccount(pin, cardNumber);
 				if(!accountOpen) {
@@ -66,10 +66,10 @@ public class ATM {
 		}
 	}
 	/**
-	 * This is the main menu in the ATM Machine. It allow user to select from withdraw funds, deposit funds, transferFunds
-	 * and view balance. The ATM will come back here after each action until the user decides to end their usage of the atm
-	 * machine. When the user finishes it goes back to welcome screen.<br><br>
-	 * There is also a quit option. Should it be hidden? ATM machines wouldn't normally turn off or end the program.
+	 * This is the main menu in the ATM. It allow user to select from withdraw funds, deposit funds, transferFunds
+	 * and view balance. The ATM will come back here after each action until the user decides to end their usage of the atm.
+	 * When the user finishes it goes back to welcome screen.<br><br>
+	 * There is also a quit option. Should it be hidden? ATMs wouldn't normally turn off or end the program.
 	 */
 	public void mainMenu() {
 		boolean quit = false;
@@ -95,15 +95,21 @@ public class ATM {
 	public void depositFunds() {
 		Screen.depositMenu();
 		int choice = getChoice(); //choice of what account to use, savings or checking
-		if(choice == 2) {}
-		else if(choice == 3) {
+		///////////////
+		if(choice == 3) {
 			System.out.println("Invalid Choice");
-		} 
-		else {
-			System.out.println("Would you like to deposit a check or cash? Type 1 for check, 2 for cash: ");
+		}
+		///////////////
+		else if (choice != 2) {
+			System.out.print("Would you like to deposit a check or cash? Type 1 for check, 2 for cash: ");
 			int checkorcashoption = getChoice();
-			if (checkorcashoption == 0) {// checking account 
-				System.out.println("How much money is on the check?: ");
+			///////////////
+			if(checkorcashoption == 3) {
+				System.out.println("Invalid Choice");
+			}
+			///////////////
+			else if (checkorcashoption == 0) {// checking account 
+				System.out.print("How much money is on the check?: ");
 				String amountStr = cin.nextLine();
 				try{
 					double amount = Double.parseDouble(amountStr);
@@ -116,7 +122,7 @@ public class ATM {
 				}
 			}
 			//cash option
-			else {
+			else if (checkorcashoption == 1) {
 	// 			Money m = new Money(); 
 				System.out.println("How much cash would you like to deposit?");
 				try{
@@ -126,14 +132,14 @@ public class ATM {
 						String amnt = cin.nextLine();
 						double amount = Double.parseDouble(amnt);
 	// 					m.valueToMoney(amount);
-						System.out.println("Is this the correct amount? Type Y for Yes, N for No: ");
+						System.out.print("Is this the correct amount? Type Y for Yes, N for No: ");
 						String confirmation = cin.nextLine();
 						if(confirmation.equalsIgnoreCase("Y")) {
 							myBank.deposit(choice, amount);
 							System.out.println("Thank you for depositing the cash!"); 
 							checkedAmount = false;
 						}else {
-							System.out.println("Please input the correct amount you wish to deposit: ");
+							System.out.print("Please input the correct amount you wish to deposit: ");
 						}
 					}
 				}catch(Exception e) {
@@ -149,20 +155,21 @@ public class ATM {
 	public void withdrawFunds() {
 		Screen.displayWithdrawMenu();
 		int choice = getChoice();
-		
-		if(choice == 2) {}
+		final double MIN_VALUE = 5;
+		///////////////
 		else if(choice == 3) {
 			System.out.println("Invalid Choice");
 		}
-		else {
+		///////////////
+		else if (choice != 2) {
 			System.out.print("How much money would you like to withdraw?: ");
 			String amtstr = cin.nextLine();
 			try {
 				double amount = Double.parseDouble(amtstr);
-				if(myBank.withdraw(choice, amount)) {
+				if(amount >= MIN_VALUE && myBank.withdraw(choice, amount)) {
 					giveMoney(amount);
 				}else {
-					System.out.println("Could Not withdraw Amount");
+					System.out.println("Could not withdraw amount");
 				}
 			}catch(Exception e) {
 				System.out.println(e);
@@ -183,10 +190,12 @@ public class ATM {
 		if(choice == 1 || choice == 0) {
 			System.out.printf("%nAccount: %s%nAmount: $%.2f%n", 
 					  (choice == 0) ? "Checking" : "Savings", myBank.viewBalance(choice));
-		}else if(choice == 2){}
-		else{
+		}
+		///////////////
+		else if (choice == 3) {
 			System.out.println("Invalid Choice");
 		}
+		///////////////
 		pressEnterToContinue();
 	}
 	/**
@@ -204,39 +213,37 @@ public class ATM {
 		}
 	}
 	/**
-	 * Model of expelling the money through the slot in the atm machine
+	 * Model of expelling the money through the slot in the atm
 	 * @param amount the money value being withdrawn
 	 */
 	private void giveMoney(double amount) {
 		int value[] = {5,10,20,50,100};
 		int remainder = (int) amount;
 		Money cash = new Money();
-		if (remainder == 0) {}
+		///////////////
 // 		if (remainder < 5) {
 // 			cash.updateMoney(1, remainder);
 // 			remainder = 0;
 // 		}
-		else {
-			System.out.println("How would you like the money withdrawn: ");
-			billsMenu(value, amount);
-			System.out.print("ENTER NUMBER: ");
-			String choicestr = cin.nextLine();
-			try {
-				int choice = Integer.parseInt(choicestr) - 1;
-				if(value[choice] <= amount) {
-					int tempamount = remainder / value[choice];
-	// 					remainder = remainder - (value[choice] * tempamount);
-	// 					cash.valueToMoney(remainder); 
-					cash.updateMoney(value[choice], tempamount);
-					System.out.println("\nYou withdrew: " + String.format("$%.2f", amount) +
-										"\nYour cash is: ");
-					System.out.println(cash.toString());
-				}else {
-					System.out.println("Invalid Choice");
-				}
-			} catch(Exception e) {
-				System.out.println("Invalid Input");
+		System.out.println("How would you like the money withdrawn: ");
+		billsMenu(value, amount);
+		System.out.print("ENTER NUMBER: ");
+		String choicestr = cin.nextLine();
+		try {
+			int choice = Integer.parseInt(choicestr) - 1;
+			if(value[choice] <= amount) {
+				int tempamount = remainder / value[choice];
+// 					remainder = remainder - (value[choice] * tempamount);
+// 					cash.valueToMoney(remainder); 
+				cash.updateMoney(value[choice], tempamount);
+				System.out.print("\nYou withdrew: " + String.format("$%.2f", amount) +
+									"\nYour cash is: ");
+				System.out.println(cash.toString());
+			}else {
+				System.out.println("Invalid Choice");
 			}
+		} catch(Exception e) {
+			System.out.println("Invalid Input");
 		}
 	}
 	/**
