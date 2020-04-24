@@ -28,7 +28,7 @@ public abstract class BankAccount {
 	 * Getter for account number
 	 * @return account number
 	 */
-	public static String getAccountNumber() {
+	public String getAccountNumber() {
 		return AccountNumber;
 	}
 	/**

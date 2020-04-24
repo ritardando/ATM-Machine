@@ -21,10 +21,9 @@ public class ATM {
 		if(choice.equalsIgnoreCase("Q")) {}
 		else {
 			//This should not be commented out unless testing
-			//insertCard();
-			
+			insertCard();
 			//For Testing purposes
-			myBank.accessAccount("7433", "00000");
+			//myBank.accessAccount("7433", "00000");
 			mainMenu();
 		}
 	}
@@ -171,9 +170,44 @@ public class ATM {
 		}
 		pressEnterToContinue();
 	}
-	
+	/**
+	 * Transfers funds from one account to another
+	 */
 	public void transferFunds() {
-		System.out.println("Function coming soon");
+		final double MIN_VALUE = 5;
+		Screen.transferMoneyMenu();
+		int choice = getChoice();
+		if(choice == 2) {}
+		else if(choice == 3) {
+			System.out.println("Invalid Choice");
+		}
+		else {
+			System.out.print("How much money would you like to transfer?: ");
+			String amtstr = cin.nextLine();
+			System.out.println("Which account would you like to transfer to?: ");
+			String aNumStr = cin.nextLine();
+			try {
+				int bankAccountType = Integer.parseInt(aNumStr.substring(aNumStr.length()-1));
+				if(bankAccountType == 1 || bankAccountType == 0) {
+					try {
+				
+						double amount = Double.parseDouble(amtstr);
+						if(myBank.transfer(choice, amount, aNumStr)) {
+							System.out.println("Transfer Sucessful");
+						}else {
+							System.out.println("Could not withdraw amount");
+						}
+					}catch(Exception e) {
+						System.out.println(e);
+					}
+				} else {
+					System.out.println("Invalid Account Number.");
+				}
+			}catch(Exception e) {
+				System.out.println("Invalid Account Number.");
+			}
+		}
+		pressEnterToContinue();
 	}
 	/**
 	 * Shows the balance in a specific account
@@ -224,8 +258,8 @@ public class ATM {
 			int choice = Integer.parseInt(choicestr) - 1;
 			if(value[choice] <= amount) {
 				int tempamount = remainder / value[choice];
-// 					remainder = remainder - (value[choice] * tempamount);
-// 					cash.valueToMoney(remainder); 
+				remainder = remainder - (value[choice] * tempamount);
+ 				cash.valueToMoney(remainder); 
 				cash.updateMoney(value[choice], tempamount);
 				System.out.print("\nYou withdrew: " + String.format("$%.2f", amount) +
 									"\nYour cash is: ");

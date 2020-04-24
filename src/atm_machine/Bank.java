@@ -40,8 +40,42 @@ public class Bank {
 		}
 		return false;	
 	}
-	
-	//withdraw money method
+	/**
+	 * Transfer money from one bank account to another bank account <br>
+	 * A user account number has a length of 5. A bank account number is the user account number 
+	 * with either a one or zero added to the end. 
+	 * @param i the account 0 is checking account, 1 is savings account
+	 * @param amount the amount that is being withdrawn from the user's account
+	 * @param accountNumber the bank account number for the account being transfered to
+	 * @return returns true if the transfer is successful and false if the transfer could not be completed
+	 */
+	public boolean transfer(int i, double amount, String accountNumber) {
+		Iterator<UserAccount> it = accounts.iterator();
+		UserAccount temp;
+		int bankAccountType = Integer.parseInt(accountNumber.substring(accountNumber.length()-1));
+		String aNum = accountNumber.substring(0, accountNumber.length()-1);
+		
+		if(withdraw(i,amount)) {
+			while(it.hasNext()) {
+				temp = it.next();
+				System.out.println(temp.getAccountNumber() + " " + aNum + " " + bankAccountType);
+				if(temp.getAccountNumber().equals(aNum)) {
+					temp.getAccount(bankAccountType).deposit(amount);
+					return true;
+				}
+			}
+			return false;
+		}else {
+			return false;
+		}
+		
+	}
+	/**
+	 * Withdraws money from a bank account
+	 * @param i
+	 * @param amount
+	 * @return
+	 */
 	public boolean withdraw(int i, double amount) {
 		return openAccount.getAccount(i).withdraw(amount);
 	}
@@ -60,9 +94,11 @@ public class Bank {
 		BankAccount BA = openAccount.getAccount(option);
 		return BA.getBalance();
 	}
-	//transfer money
-	//public void transfer(int i, float amount, String accountNumber)
-	
+	/**
+	 * Close Account<br>
+	 * Sets open account to null once the user is done using the atm
+	 * machine
+	 */
 	public void closeAccount() {
 		openAccount = null;
 	}
